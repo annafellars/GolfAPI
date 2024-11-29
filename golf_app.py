@@ -60,11 +60,11 @@ tab1, tab2 = st.tabs(["Years", "Players"])
 
 # Tournament mapping
 tournament_ids = {
-    "Olympics": 519,
-    "Open Champ": 100,
-    "Masters": 014,
-    "US Open": 026,
-    "PGA Champ": 033,
+    "Olympics": "519",
+    "Open Champ": "100",
+    "Masters": "014",
+    "US Open": "026",
+    "PGA Champ": "033"
 }
 
 with tab1:
