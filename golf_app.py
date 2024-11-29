@@ -53,6 +53,47 @@ def scoreboard(year, tourn_id):
 
     return pd.DataFrame(scoreboard_list)
 
+def avg_scores(data):
+    # Reshape the data to long format for easier manipulation
+    rounds_df = data.melt(
+        id_vars=['ID', 'Total Strokes', 'Tournament Status'], 
+        value_vars=['First Round', 'Second Round', 'Third Round', 'Fourth Round'], 
+        var_name='Round', 
+        value_name='Score'
+    )
+
+    # Ensure correct order of rounds
+    round_order = ['First Round', 'Second Round', 'Third Round', 'Fourth Round']
+    rounds_df['Round'] = pd.Categorical(rounds_df['Round'], categories=round_order, ordered=True)
+
+    # Filter for players with 'complete' tournament status
+    valid_players = rounds_df[rounds_df['Tournament Status'] == 'complete']
+
+    # Calculate the average score for each round
+    avg_scores = valid_players.groupby('Round')['Score'].mean().reset_index()
+    avg_scores.rename(columns={'Score': 'Average Score'}, inplace=True)
+
+    # Find the winning player (player with the lowest total strokes)
+    winning_player = data.loc[data['Total Strokes'].idxmin()]
+    
+    # Get the winning player's scores across rounds
+    winning_player_scores = rounds_df[rounds_df['ID'] == winning_player['ID']]
+
+    # Find the losing player (player with the highest total strokes)
+    losing_player = data.loc[data['Total Strokes'].idxmax()]
+
+    # Get the losing player's scores across rounds
+    losing_player_scores = rounds_df[rounds_df['ID'] == losing_player['ID']]
+
+    # Merge the winning and losing player's scores with the average scores
+    summary = avg_scores.merge(winning_player_scores[['Round', 'Score']], on='Round', how='left')
+    summary = summary.rename(columns={'Score': 'Winning Player Score'})
+    
+    summary = summary.merge(losing_player_scores[['Round', 'Score']], on='Round', how='left')
+    summary = summary.rename(columns={'Score': 'Losing Player Score'})
+
+    return summary
+
 # Streamlit App
 st.title("Charting the Course")
 
@@ -72,9 +113,26 @@ with tab1:
     input_tournament = st.selectbox("Select a Tournament:", list(tournament_ids.keys()))
     tourn_id = tournament_ids[input_tournament]
 
-    if input_year and tourn_id:
-        score_data = scoreboard(input_year, tourn_id)
-        if not score_data.empty:
-            st.dataframe(score_data)
-        else:
-            st.warning("No data available for the selected year and tournament.")
+    with st.expander("See Dataframe"):
+        if input_year and tourn_id:
+            score_data = scoreboard(input_year, tourn_id)
+            if not score_data.empty:
+                st.dataframe(score_data)
+            else:
+                st.warning("No data available for the selected year and tournament.")
+    
+    if not score_data.empty:
+        summary_data = avg_scores(score_data)
+
+        # Plotting the summary data
+        fig = px.line(
+            summary_data.melt(id_vars='Round', var_name='Metric', value_name='Score'),
+            x='Round',
+            y='Score',
+            color='Metric',
+            title='Round Metrics Summary'
+        )
+
+        st.plotly_chart(fig)
+    else:
+        st.warning("No valid score data available.")
