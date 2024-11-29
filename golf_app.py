@@ -2,14 +2,12 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 import requests
-from io import BytesIO
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit as st
+import os
 
-# Load API key
-with open("golf_API_key", "r") as file:
-    api_key = file.read().strip()
+api_key = st.secrets["GOLF_API_KEY"]
 
 base_url = "https://live-golf-data.p.rapidapi.com/leaderboard"
 headers = {
