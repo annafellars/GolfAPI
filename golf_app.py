@@ -68,8 +68,8 @@ tournament_ids = {
 }
 
 with tab1:
-    input_year = st.text_input("Enter a Year:")
-    input_tournament = st.selectbox("Select a Tournament", list(tournament_ids.keys()))
+    input_year = st.selectbox("Select a Year:", ("2021", "2022", "2023", "2024"))
+    input_tournament = st.selectbox("Select a Tournament:", list(tournament_ids.keys()))
     tourn_id = tournament_ids[input_tournament]
 
     if input_year and tourn_id:
