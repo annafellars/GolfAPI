@@ -67,7 +67,7 @@ def avg_scores(data):
     rounds_df['Round'] = pd.Categorical(rounds_df['Round'], categories=round_order, ordered=True)
 
     # Filter for players with 'complete' tournament status
-    valid_players = rounds_df[rounds_df['Tournament Status'] == 'complete']
+    valid_players = rounds_df[pd.to_numeric(rounds_df['Score'], errors='coerce').notna()]
 
     # Calculate the average score for each round
     avg_scores = valid_players.groupby('Round')['Score'].mean().reset_index()
