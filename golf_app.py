@@ -62,9 +62,9 @@ tab1, tab2 = st.tabs(["Years", "Players"])
 tournament_ids = {
     "Olympics": 519,
     "Open Champ": 100,
-    "Masters": 14,
-    "US Open": 26,
-    "PGA Champ": 33,
+    "Masters": 014,
+    "US Open": 026,
+    "PGA Champ": 033,
 }
 
 with tab1:
