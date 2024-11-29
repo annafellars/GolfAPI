@@ -74,22 +74,16 @@ def avg_scores(data):
     avg_scores.rename(columns={'Score': 'Average Score'}, inplace=True)
 
     # Find the winning player (player with the lowest total strokes)
-    winning_player = data.loc[data['Total Strokes'].idxmin()]
+    winning_player = valid_players.iloc[0]
     
-    # Get the winning player's scores across rounds
-    winning_player_scores = rounds_df[rounds_df['ID'] == winning_player['ID']]
-
     # Find the losing player (player with the highest total strokes)
-    losing_player = data.loc[data['Total Strokes'].idxmax()]
-
-    # Get the losing player's scores across rounds
-    losing_player_scores = rounds_df[rounds_df['ID'] == losing_player['ID']]
+    losing_player = valid_players.iloc[-1]
 
     # Merge the winning and losing player's scores with the average scores
-    summary = avg_scores.merge(winning_player_scores[['Round', 'Score']], on='Round', how='left')
+    summary = avg_scores.merge(winning_player[['Round', 'Score']], on='Round', how='left')
     summary = summary.rename(columns={'Score': 'Winning Player Score'})
     
-    summary = summary.merge(losing_player_scores[['Round', 'Score']], on='Round', how='left')
+    summary = summary.merge(losing_player[['Round', 'Score']], on='Round', how='left')
     summary = summary.rename(columns={'Score': 'Losing Player Score'})
 
     return summary
