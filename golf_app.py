@@ -50,6 +50,31 @@ def avg_scores(data):
 
     return summary
 
+def compare_players(player1, player2):
+    rounds_df = scoreboard_df.melt(
+    id_vars=['ID', 'Total Strokes', 'Tournament Status'], 
+    value_vars=['First Round', 'Second Round', 'Third Round', 'Fourth Round'], 
+    var_name='Round', 
+    value_name='Score')
+
+    player_data = rounds_df[rounds_df['Name'].isin([player1, player2])]
+    player_data = rounds_df[rounds_df['ID'].isin(player_names['ID'])]
+    avg_scores = player_data.groupby(['ID', 'Course Name', 'Name'])['Score'].mean().reset_index()
+
+    avg_scores['Course Name'].replace({
+    'Le Golf National': 'Olympics', 
+    'Royal Troon': 'Open Champ', 
+    'Pinehurst Resort & Country Club (Course No. 2)': 'US Open', 
+    'Augusta National Golf Club': 'Masters', 
+    'Valhalla Golf Club': 'PGA Champ'
+    }, inplace=True)
+
+    avg_scores = player_data.groupby(['Name', 'Course Name'])['Score'].mean().reset_index()
+    avg_scores.rename(columns={'Score': 'Average Score'}, inplace=True)
+
+    return avg_scores
+
+
 # Streamlit App
 st.title("Charting the Course")
 
@@ -90,3 +115,39 @@ with tab1:
         st.plotly_chart(fig)
     else:
         st.warning("No valid score data available.")
+
+with tab2:
+    # Player Inputs
+    input_player1 = st.text_input("Enter the First Player Name:")
+    input_player2 = st.text_input("Enter the Second Player Name to Compare:")
+
+    if input_player1 and input_player2:
+        # Filter Data for Each Player
+        player_summary1 = scoreboard_df[scoreboard_df["Name"] == input_player1]
+        player_summary2 = scoreboard_df[scoreboard_df["Name"] == input_player2]
+
+        if not player_summary1.empty and not player_summary2.empty:
+            # Display Metrics
+            col1, col2 = st.columns(2)
+            col1.metric(label=f"{input_player1} Average Position", 
+                        value=round(player_summary1["Position"].mean(), 2))
+            col2.metric(label=f"{input_player2} Average Position", 
+                        value=round(player_summary2["Position"].mean(), 2))
+
+            # Generate Comparison Data
+            graph_data = compare_players(input_player1, input_player2)
+
+            # Plotting the Comparison
+            fig2 = px.line(
+                graph_data, 
+                x='Course Name', 
+                y='Average Score', 
+                color='Name', 
+                title="Player Comparison in 2024",
+                markers=True
+            )
+            st.plotly_chart(fig2)
+        else:
+            st.warning("One or both players not found in the dataset. Please check the names.")
+    else:
+        st.info("Enter names for both players to compare.")
