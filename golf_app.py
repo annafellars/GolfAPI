@@ -70,9 +70,6 @@ def compare_players(player1, player2):
     avg_scores = player_data.groupby(['Name', 'Course Name'])['Score'].mean().reset_index()
     avg_scores.rename(columns={'Score': 'Average Score'}, inplace=True)
 
-    course_order = ['Masters', 'PGA Champ', 'US Open', 'Open Champ', 'Olympics']
-    avg_scores['Course Name'] = pd.Categorical(avg_scores['Course Name'], categories=course_order, ordered=True)
-
     return avg_scores
 
 
@@ -145,6 +142,7 @@ with tab2:
                 y='Average Score', 
                 color='Name', 
                 title="Player Comparison in 2024",
+                category_orders = {'Course Name': ['Masters', 'PGA Champ', 'US Open', 'Open Champ', 'Olympics']},
                 markers=True
             )
             st.plotly_chart(fig2)
