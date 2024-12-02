@@ -52,14 +52,12 @@ def avg_scores(data):
 
 def compare_players(player1, player2):
     rounds_df = scoreboard_df.melt(
-    id_vars=['ID', 'Total Strokes', 'Tournament Status'], 
+    id_vars=['Name', 'Total Strokes', 'Tournament Status'], 
     value_vars=['First Round', 'Second Round', 'Third Round', 'Fourth Round'], 
     var_name='Round', 
     value_name='Score')
 
     player_data = rounds_df[rounds_df['Name'].isin([player1, player2])]
-    player_data = rounds_df[rounds_df['ID'].isin(player_names['ID'])]
-    avg_scores = player_data.groupby(['ID', 'Course Name', 'Name'])['Score'].mean().reset_index()
 
     avg_scores['Course Name'].replace({
     'Le Golf National': 'Olympics', 
