@@ -52,7 +52,7 @@ def avg_scores(data):
 
 def compare_players(player1, player2):
     rounds_df = scoreboard_df.melt(
-    id_vars=['Name', 'Total Strokes', 'Tournament Status'], 
+    id_vars=['Name', 'Total Strokes', 'Tournament Status', 'Course Name'], 
     value_vars=['First Round', 'Second Round', 'Third Round', 'Fourth Round'], 
     var_name='Round', 
     value_name='Score')
