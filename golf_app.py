@@ -67,6 +67,9 @@ def compare_players(player1, player2):
     'Valhalla Golf Club': 'PGA Champ'
     }, inplace=True)
 
+    course_order = ['Masters', 'PGA Champ', 'US Open', 'Open Champ', 'Olympics']
+    player_data['Course Name'] = pd.Categorical(player_data['Course Name'], categories=course_order, ordered=True)
+
     avg_scores = player_data.groupby(['Name', 'Course Name'])['Score'].mean().reset_index()
     avg_scores.rename(columns={'Score': 'Average Score'}, inplace=True)
 
