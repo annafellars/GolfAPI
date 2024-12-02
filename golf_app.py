@@ -59,7 +59,7 @@ def compare_players(player1, player2):
 
     player_data = rounds_df[rounds_df['Name'].isin([player1, player2])]
 
-    avg_scores['Course Name'].replace({
+    player_data['Course Name'].replace({
     'Le Golf National': 'Olympics', 
     'Royal Troon': 'Open Champ', 
     'Pinehurst Resort & Country Club (Course No. 2)': 'US Open', 
