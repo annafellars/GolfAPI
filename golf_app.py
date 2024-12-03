@@ -126,7 +126,7 @@ with tab2:
         # Plotting the summary data
         custom_colors = {
             'Average Score': '#247BA0', 
-            'First Place Score': '#4F5D2F', 
+            'First Place Score': '#3BC14A', 
             'Last Place Score': '#BF211E'  
         }
 
@@ -137,6 +137,7 @@ with tab2:
             y='Score',
             color='Metric',
             title='Round Metrics Summary',
+            markers=True,
             color_discrete_map=custom_colors
         )
 
