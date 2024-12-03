@@ -103,7 +103,7 @@ course_to_tournament = {v: k for k, v in tournament_ids.items()}
 with tab1:
     st.subheader("Welcome!")
     st.write("This app is dedicated to making golf more fun! Play around with comparing players and viewing Major Tournament Stats. Check out my blog post on how I collected the data, or on a golf analysis.")
-    cola, colb = st.columns(2)
+    cola, colb = st.columns(2, gap="medium")
     cola.link_button("API Data Collection", "https://annafellars.github.io/annablog/blog/PGA-Analysis/")
     colb.link_button("PGA Data Analysis", "https://annafellars.github.io/annablog/blog/PGA-Analysis/")
     st.video("https://www.youtube.com/watch?v=Ot6rwdU84qs")
@@ -123,13 +123,30 @@ with tab2:
         summary_data = avg_scores(score_data)
 
         # Plotting the summary data
+        custom_colors = {
+            'Average Score': '#6A8EAE', 
+            'Winning Player Score': '#57A773', 
+            'Losing Player Score': '#CE7B91'  
+        }
+
+        custom_labels = {
+            'Average Score': 'Average Round Score',
+            'Winning Player Score': 'First Place Score',
+            'Losing Player Score': 'Last Place Score'
+        }
+
+        # Create the figure
         fig = px.line(
             summary_data.melt(id_vars='Round', var_name='Metric', value_name='Score'),
             x='Round',
             y='Score',
             color='Metric',
-            title='Round Metrics Summary'
+            title='Round Metrics Summary',
+            color_discrete_map=custom_colors
         )
+
+# Update the legend to use custom labels
+        fig.for_each_trace(lambda t: t.update(name=custom_labels[t.name]))
 
         st.plotly_chart(fig)
     else:
@@ -167,15 +184,20 @@ with tab3:
             # Generate Comparison Data
             graph_data = compare_players(input_player1, input_player2)
 
+            custom_colors2 = {
+                input_player1: '#6A8EAE', 
+                input_player2: '#730071' 
+            }
             # Plotting the Comparison
             fig2 = px.line(
                 graph_data, 
                 x='Course Name', 
                 y='Average Score', 
-                color='Name', 
+                color='Name',
                 title="Player Comparison in 2024",
-                category_orders = {'Course Name': ['Masters', 'PGA Champ', 'US Open', 'Open Champ', 'Olympics']},
-                markers=True
+                category_orders={'Course Name': ['Masters', 'PGA Champ', 'US Open', 'Open Champ', 'Olympics']},
+                markers=True,
+                color_discrete_map=custom_colors2
             )
             st.subheader("Average Round by Tournament")
             st.plotly_chart(fig2)
