@@ -98,6 +98,8 @@ tournament_ids = {
     "PGA Champ": "Valhalla Golf Club"
 }
 
+course_to_tournament = {v: k for k, v in tournament_ids.items()}
+
 with tab1:
     st.video("https://www.youtube.com/watch?v=Ot6rwdU84qs")
 
@@ -148,8 +150,7 @@ with tab3:
             
             #Position data
             players_data = scoreboard_df[scoreboard_df["Name"].isin([input_player1, input_player2])]
-
-            players_data['Course Name'].replace(tournament_ids, inplace=True)
+            players_data['Course Name'].replace(course_to_tournament, inplace=True)
 
             # Create position_df with players as rows and tournaments as columns
             position_df = players_data.pivot(index='Name', columns='Course Name', values='Position')
