@@ -126,8 +126,8 @@ with tab2:
         # Plotting the summary data
         custom_colors = {
             'Average Score': '#6A8EAE', 
-            'Winning Player Score': '#57A773', 
-            'Losing Player Score': '#CE7B91'  
+            'Winning Player Score': '#CE7B91', 
+            'Losing Player Score': '#57A773'  
         }
 
         # Create the figure
