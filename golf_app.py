@@ -79,7 +79,15 @@ def compare_players(player1, player2):
 # Streamlit App
 st.title("Charting the Course")
 
-tab1, tab2 = st.tabs(["2024 Majors", "Player Stats"])
+with st.sidebar:
+    st.write("Other resources!")
+    st.link_button("API documentation", "https://slashgolf.dev/docs.html#tag/PGA-Tour-Information")
+    st.link_button("More PGA Stats", "https://www.pgatour.com/stats")
+
+    st.write("Have any questions? Contact me on LinkedIn")
+    st.link_button("LinkedIn", "https://www.linkedin.com/in/anna-fellars/")
+
+tab1, tab2, tab3 = st.tabs(["Home", "2024 Majors", "Player Stats"])
 
 # Tournament mapping
 tournament_ids = {
@@ -91,6 +99,9 @@ tournament_ids = {
 }
 
 with tab1:
+    st.video("https://www.youtube.com/watch?v=Ot6rwdU84qs")
+
+with tab2:
     input_tournament = st.selectbox("Select a Tournament:", list(tournament_ids.keys()))
     tourn_id = tournament_ids[input_tournament]
 
@@ -117,7 +128,7 @@ with tab1:
     else:
         st.warning("No valid score data available.")
 
-with tab2:
+with tab3:
     # Player Inputs
     input_player1 = st.text_input("Enter the First Player Name:")
     input_player2 = st.text_input("Enter the Second Player Name to Compare:")
@@ -134,6 +145,18 @@ with tab2:
                         value=round(player_summary1["Position"].mean(), 2))
             col2.metric(label=f"{input_player2} Average Position", 
                         value=round(player_summary2["Position"].mean(), 2))
+            
+            #Position data
+            players_data = scoreboard_df[scoreboard_df["Name"].isin([input_player1, input_player2])]
+
+            players_data['Course Name'].replace(tournament_ids, inplace=True)
+
+            # Create position_df with players as rows and tournaments as columns
+            position_df = players_data.pivot(index='Name', columns='Course Name', values='Position')
+            position_df.reset_index(inplace=True)  # Reset index for better display
+
+            st.subheader("Player Positions by Tournament")
+            st.dataframe(position_df.style.format("{:.0f}"))
 
             # Generate Comparison Data
             graph_data = compare_players(input_player1, input_player2)
