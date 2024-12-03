@@ -126,8 +126,8 @@ with tab2:
         # Plotting the summary data
         custom_colors = {
             'Average Score': '#6A8EAE', 
-            'Winning Player Score': '#CE7B91', 
-            'Losing Player Score': '#57A773'  
+            'First Place Score': '#CE7B91', 
+            'Last Place Score': '#57A773'  
         }
 
         # Create the figure
@@ -146,8 +146,9 @@ with tab2:
 
 with tab3:
     # Player Inputs
-    input_player1 = st.text_input("Enter the First Player Name:")
-    input_player2 = st.text_input("Enter the Second Player Name to Compare:")
+    input_player1 = st.text_input("Enter the First Player Name:", "Scottie Scheffler")
+    input_player2 = st.text_input("Enter the Second Player Name to Compare:", "Xander Schauffele")
+
 
     if input_player1 and input_player2:
         # Filter Data for Each Player
