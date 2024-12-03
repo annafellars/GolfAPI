@@ -129,12 +129,6 @@ with tab2:
             'Losing Player Score': '#CE7B91'  
         }
 
-        custom_labels = {
-            'Average Score': 'Average Round Score',
-            'Winning Player Score': 'First Place Score',
-            'Losing Player Score': 'Last Place Score'
-        }
-
         # Create the figure
         fig = px.line(
             summary_data.melt(id_vars='Round', var_name='Metric', value_name='Score'),
@@ -144,9 +138,6 @@ with tab2:
             title='Round Metrics Summary',
             color_discrete_map=custom_colors
         )
-
-# Update the legend to use custom labels
-        fig.for_each_trace(lambda t: t.update(name=custom_labels[t.name]))
 
         st.plotly_chart(fig)
     else:
