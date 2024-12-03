@@ -156,7 +156,7 @@ with tab3:
             position_df.reset_index(inplace=True)  # Reset index for better display
 
             st.subheader("Player Positions by Tournament")
-            st.dataframe(position_df.style.format("{:.0f}"))
+            st.dataframe(position_df)
 
             # Generate Comparison Data
             graph_data = compare_players(input_player1, input_player2)
@@ -171,6 +171,7 @@ with tab3:
                 category_orders = {'Course Name': ['Masters', 'PGA Champ', 'US Open', 'Open Champ', 'Olympics']},
                 markers=True
             )
+            st.subheader("Average Round by Tournament")
             st.plotly_chart(fig2)
         else:
             st.warning("One or both players not found in the dataset. Please check the names.")
