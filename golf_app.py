@@ -125,9 +125,9 @@ with tab2:
 
         # Plotting the summary data
         custom_colors = {
-            'Average Score': '#6A8EAE', 
-            'First Place Score': '#CE7B91', 
-            'Last Place Score': '#57A773'  
+            'Average Score': '#247BA0', 
+            'First Place Score': '#4F5D2F', 
+            'Last Place Score': '#BF211E'  
         }
 
         # Create the figure
@@ -178,8 +178,8 @@ with tab3:
             graph_data = compare_players(input_player1, input_player2)
 
             custom_colors2 = {
-                input_player1: '#6A8EAE', 
-                input_player2: '#730071' 
+                input_player1: '#247BA0', 
+                input_player2: '#D1BCE3' 
             }
             # Plotting the Comparison
             fig2 = px.line(
