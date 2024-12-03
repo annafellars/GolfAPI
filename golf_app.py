@@ -72,7 +72,7 @@ def compare_players(player1, player2):
     player_data['Course Name'] = pd.Categorical(player_data['Course Name'], categories=course_order, ordered=True)
 
     avg_scores = player_data.groupby(['Name', 'Course Name'])['Score'].mean().reset_index()
-    avg_scores.rename(columns={'Score': 'Average Score'}, inplace=True)
+    avg_scores.rename(columns={'Score': 'Overall Average Score'}, inplace=True)
 
     return avg_scores
 
@@ -125,7 +125,7 @@ with tab2:
 
         # Plotting the summary data
         custom_colors = {
-            'Average Score': '#2274A5', 
+            'Overall Average Score': '#2274A5', 
             'First Place Score': '#3BC14A', 
             'Last Place Score': '#BF211E'  
         }
