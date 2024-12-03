@@ -41,12 +41,13 @@ def avg_scores(data):
     losing_player = valid_players.loc[valid_players['Total Strokes'].idxmax()]
 
     winning_scores = valid_players[valid_players['ID'] == winning_player['ID']][['Round', 'Score']]
+    winning_scores.rename(columns={'Score': 'First Place Score'}, inplace=True)
     losing_scores = valid_players[valid_players['ID'] == losing_player['ID']][['Round', 'Score']]
-
+    losing_scores.rename(columns={'Score': 'Last Place Score'}, inplace = True)
+    
     # Merge the winning and losing player's scores with the average scores
     summary = avg_scores.merge(winning_scores, on='Round', how='left')
     summary = summary.merge(losing_scores, on='Round', how='left')
-    summary.rename(columns={'Score Winning': 'Winning Player Score', 'Score Losing': 'Losing Player Score'}, inplace=True)
 
     return summary
 
