@@ -101,6 +101,11 @@ tournament_ids = {
 course_to_tournament = {v: k for k, v in tournament_ids.items()}
 
 with tab1:
+    st.subheader("Welcome!")
+    st.write("This app is dedicated to making golf more fun! Play around with comparing players and viewing Major Tournament Stats. Check out my blog post on how I collected the data, or on a golf analysis.")
+    cola, colb = st.columns(2)
+    cola.link_button("API Data Collection", "https://annafellars.github.io/annablog/blog/PGA-Analysis/")
+    colb.link_button("PGA Data Analysis", "https://annafellars.github.io/annablog/blog/PGA-Analysis/")
     st.video("https://www.youtube.com/watch?v=Ot6rwdU84qs")
 
 with tab2:
