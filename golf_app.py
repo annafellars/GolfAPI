@@ -7,18 +7,18 @@ from plotly.subplots import make_subplots
 import streamlit as st
 import os
 
-api_key = st.secrets["GOLF_API_KEY"]
+# api_key = st.secrets["GOLF_API_KEY"]
 
-base_url = "https://live-golf-data.p.rapidapi.com/leaderboard"
-headers = {
-    "x-rapidapi-key": api_key,
-    "x-rapidapi-host": "live-golf-data.p.rapidapi.com",
-}
+# base_url = "https://live-golf-data.p.rapidapi.com/leaderboard"
+# headers = {
+#     "x-rapidapi-key": api_key,
+#     "x-rapidapi-host": "live-golf-data.p.rapidapi.com",
+# }
 
 scoreboard_df = pd.read_csv("clean_scoreboard_df.csv")
 
 def avg_scores(data):
-    # Reshape the data to long format for easier manipulation
+
     rounds_df = data.melt(
         id_vars=['ID', 'Total Strokes', 'Tournament Status'], 
         value_vars=['First Round', 'Second Round', 'Third Round', 'Fourth Round'], 
@@ -26,14 +26,11 @@ def avg_scores(data):
         value_name='Score'
     )
 
-    # Ensure correct order of rounds
     round_order = ['First Round', 'Second Round', 'Third Round', 'Fourth Round']
     rounds_df['Round'] = pd.Categorical(rounds_df['Round'], categories=round_order, ordered=True)
 
-    # Filter for players with 'complete' tournament status
     valid_players = rounds_df[rounds_df["Tournament Status"] == "complete"]
 
-    # Calculate the average score for each round
     avg_scores = valid_players.groupby('Round')['Score'].mean().reset_index()
     avg_scores.rename(columns={'Score': 'Average Score'}, inplace=True)
 
@@ -45,7 +42,6 @@ def avg_scores(data):
     losing_scores = valid_players[valid_players['ID'] == losing_player['ID']][['Round', 'Score']]
     losing_scores.rename(columns={'Score': 'Last Place Score'}, inplace = True)
     
-    # Merge the winning and losing player's scores with the average scores
     summary = avg_scores.merge(winning_scores, on='Round', how='left')
     summary = summary.merge(losing_scores, on='Round', how='left')
 
@@ -80,6 +76,7 @@ def compare_players(player1, player2):
 # Streamlit App
 st.title("Charting the Course")
 
+#layout
 with st.sidebar:
     st.write("Other resources!")
     st.link_button("API documentation", "https://slashgolf.dev/docs.html#tag/PGA-Tour-Information")
@@ -106,7 +103,7 @@ with tab1:
     st.write("This app is dedicated to making golf more fun! Play around with comparing players and viewing Major Tournament Stats. Check out my blog post on how I collected the data, or on a golf analysis.")
     cola, colb = st.columns(2, gap="medium")
     cola.link_button("API Data Collection", "https://annafellars.github.io/annablog/blog/PGA-Analysis/")
-    colb.link_button("PGA Data Analysis", "https://annafellars.github.io/annablog/blog/PGA-Analysis/")
+    colb.link_button("PGA Data Analysis", "https://annafellars.github.io/annablog/blog/PGA-Prediction/")
     st.video("https://www.youtube.com/watch?v=Ot6rwdU84qs")
 
 with tab2:
