@@ -11,4 +11,4 @@ The code includes the functions I ran to create the graphs and the streamlit ele
 golf_blog2.ipynb
 This code is an example of how to do a correlation matrix along with scatterplots that help visualize the relation. It also has code for feature engineering and a penalized linear regression and random forest model. 
 I used this code to try and predict final day tournament rankings in golf based on the previous days.
-If you have any questions you can refer to my blog post which provides a deeper explanation:
+If you have any questions you can refer to my blog post which provides a deeper explanation: https://annafellars.github.io/annablog/blog/PGA-Prediction/
